@@ -1,9 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Transform } from "class-transformer";
-import { IsDate, IsNumber, Length, Matches, Min } from 'class-validator';
-import * as moment from 'moment';
+import { IsNumber, Min } from 'class-validator';
 
-export class UserRegisterDto {
+export class UserDetailsDto {
     @ApiProperty({ default: 'user@email.com' })
     email: string;
 

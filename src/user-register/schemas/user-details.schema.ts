@@ -2,15 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
-export class UserData extends Document {
+export class UserDetails extends Document {
     @Prop({ type: Types.ObjectId })
-    idUser: Types.ObjectId;
-
-    @Prop({ required: true, unique: true })
-    email: string;
-
-    @Prop({ required: true })
-    password: string;
+    user_Id: Types.ObjectId;
 
     @Prop({ required: true })
     nationality: string;
@@ -28,4 +22,4 @@ export class UserData extends Document {
     verificationStatus: boolean;
 }
 
-export const UserDataSchema = SchemaFactory.createForClass(UserData);
+export const UserDetailsSchema = SchemaFactory.createForClass(UserDetails);
