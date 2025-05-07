@@ -9,10 +9,12 @@ import { UserRegisterService } from './user-register.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{name: 'UserDetails', schema: UserDetailsSchema}]),
-    MongooseModule.forFeature([{name: 'Users', schema: UsersSchema}])
+    MongooseModule.forFeature([
+      { name: 'UserDetails', schema: UserDetailsSchema },
+    ]),
+    MongooseModule.forFeature([{ name: 'Users', schema: UsersSchema }]),
   ],
   controllers: [UserRegisterController],
-  providers: [UserRegisterService]
+  providers: [UserRegisterService],
 })
 export class UserRegisterModule {}

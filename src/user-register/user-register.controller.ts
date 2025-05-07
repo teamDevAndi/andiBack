@@ -7,10 +7,10 @@ import { UserDetailsDto } from './dto/user-details.dto';
 @ApiTags('auth')
 @Controller('api/auth')
 export class UserRegisterController {
-    constructor(private readonly userRegisterService: UserRegisterService) { }
-    @Post('register')
-    async registerUser(@Body() userDetailsDto: UserDetailsDto) {
-        await this.userRegisterService.createUser(userDetailsDto);
-        return { message: 'User registered successfully' };
-    }
+  constructor(private readonly userRegisterService: UserRegisterService) {}
+  @Post('register')
+  async registerUser(@Body() userDetailsDto: UserDetailsDto) {
+    await this.userRegisterService.createUser(userDetailsDto);
+    return { message: 'User registered successfully' };
+  }
 }
