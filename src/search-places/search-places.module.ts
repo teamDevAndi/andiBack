@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Place, PlaceSchema } from './schemas/place.schema';
 import { PlaceLocationSchema } from './schemas/place-location.schema';
 
-// Importación de todos los discriminadores
 import { TreekingSchema } from './discriminators/treeking/treeking.schema';
 import { ViewPointsSchema } from './discriminators/viewPoints/viewPoint.schema';
 import { ParkSchema } from './discriminators/park/park.schema';

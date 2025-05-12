@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Languages } from 'src/search-places/types/place.type';
+import { PlaceDto } from '../../dto/place.dto';
 
-export class RuinsDto {
+export class RuinsDto extends PlaceDto {
   @ApiProperty({ example: 'historical_period' })
   historical_period: Languages[];
 

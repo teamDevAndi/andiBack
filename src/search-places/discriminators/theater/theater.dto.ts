@@ -1,6 +1,7 @@
+import { PlaceDto } from '../../dto/place.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TheaterDto {
+export class TheaterDto extends PlaceDto {
   @ApiProperty({ example: 'seating_capacity' })
   seating_capacity: number;
 

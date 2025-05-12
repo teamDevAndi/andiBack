@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Languages } from 'src/search-places/types/place.type';
+import { PlaceDto } from '../../dto/place.dto';
 
-export class SuperMarketDto {
+export class SuperMarketDto extends PlaceDto {
   @ApiProperty({ example: 'product_categories' })
   product_categories: Languages[];
 
