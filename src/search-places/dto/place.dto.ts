@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Costs, Description, Times } from "../types/place.type";
+import { Costs, Languages, Times } from "../types/place.type";
 import { Type } from "class-transformer";
 
 export class PlaceDto {
@@ -30,8 +30,8 @@ export class PlaceDto {
     costs: Costs[];
 
     @ApiProperty({ example: "description" })
-    @Type(() => Description)
-    description: Description;
+    @Type(() => Languages)
+    description: Languages[];
 
     @ApiProperty({ example: "labels" })
     labels: string[];
