@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PlaceDto } from '../../dto/place.dto';
 
-export class CafeDto {
+export class CafeDto extends PlaceDto {
   @ApiProperty({ example: 'price_range' })
   price_range: number;
 

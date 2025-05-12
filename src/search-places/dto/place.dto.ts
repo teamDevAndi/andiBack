@@ -3,14 +3,14 @@ import { Costs, Languages, Times } from '../types/place.type';
 import { Type } from 'class-transformer';
 
 export class PlaceDto {
+  @ApiProperty({ example: 'category' })
+  category: string;
+
   @ApiProperty({ example: 'name' })
   name: string;
 
   @ApiProperty({ example: 'picturePrincipal' })
   picturePrincipal: string;
-
-  @ApiProperty({ example: 'category' })
-  category: string;
 
   @ApiProperty({ example: 'subCategory' })
   subCategory: string;

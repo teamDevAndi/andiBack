@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Languages } from 'src/search-places/types/place.type';
+import { PlaceDto } from '../../dto/place.dto';
 
-export class UniqueStoreDto {
+export class UniqueStoreDto extends PlaceDto {
   @ApiProperty({ example: 'specialization' })
   specialization: Languages[];
 
