@@ -13,9 +13,9 @@ import { UserRegisterModule } from './user-register/user-register.module';
     }),
     MongooseModule.forRoot(process.env.MONGO_URI ?? ''),
     SearchPlacesModule,
-    UserRegisterModule
+    UserRegisterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
