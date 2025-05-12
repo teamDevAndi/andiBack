@@ -17,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     UserRegisterModule,
     SearchPlacesModule,
-    UserRegisterModule
+    UserRegisterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
