@@ -5,8 +5,13 @@ import { Model } from 'mongoose';
 import { UserDetailsDto } from './dto/user-details.dto';
 import { UserDetails } from './schemas/user-details.schema';
 import { Users } from './schemas/users.schema';
-import { sendVerificationEmail } from 'src/helpers/sendVerificationCode';
-import { encryptPassword } from 'src/helpers/encryptPassword';
+import { sendVerificationEmail } from './helpers/sendVerificationCode';
+import { encryptPassword } from './helpers/encryptPassword';
+import {  generateVerificationCode } from './utils/verificationCodeGenerator';
+import { expirationTime } from './utils/expirationTimeGenerator';
+import { emailExists } from './helpers/verificationEmailExists';
+import { RequestPasswordDto } from './dto/password-reset/request-password.dto';
+import { sendResetCode } from './helpers/sendResetCode';
 
 @Injectable()
 export class UserRegisterService {
@@ -16,14 +21,13 @@ export class UserRegisterService {
     ) { }
 
     async createUser(userDetailsDto: UserDetailsDto) {
-        const existingUser = await this.usersModel.findOne({ email: userDetailsDto.email });
-        if (existingUser) {
+        if (await emailExists(userDetailsDto.email, this.usersModel)) {
             throw new BadRequestException('Email already registered');
         }
 
         const hashedPassword = await encryptPassword(userDetailsDto.password);
-        const verificationCode = Math.floor(10000 + Math.random() * 90000).toString();
-        const expirationDate = new Date(Date.now() + 10 * 60 * 1000);
+        const verificationCode = generateVerificationCode();
+        const expirationDate = expirationTime(10);
         
         const users = new  this.usersModel({
             email: userDetailsDto.email,
@@ -37,6 +41,9 @@ export class UserRegisterService {
             verificationCode,
             verificationCodeExpiresAt: expirationDate,
             verificationStatus: false,
+            resetCode: null,
+            resetCodeExpiresAt: null,
+            resetStatus: false,
         });
 
         await users.save();
@@ -45,5 +52,30 @@ export class UserRegisterService {
         await sendVerificationEmail(userDetailsDto.email, verificationCode);
 
         return { message: 'Register successfully. Check your email.' };
+    }
+
+    async getUsers() {
+        return await this.usersModel.find().exec();
+    }
+
+    async requestPasswordReset(requestPasswordDto: RequestPasswordDto) {        
+        const user = await emailExists(requestPasswordDto.email, this.usersModel);
+
+        if (!user.exists) {
+            throw new BadRequestException('Email not registered');
+        }
+
+        const resetCode = generateVerificationCode();
+        const resetCodeExpiresAt = expirationTime(10);
+
+        const updatedUser = this.userDetailsModel.findOneAndUpdate((await user).existingUser._id, {
+            resetCode: resetCode,
+            resetCodeExpiresAt: resetCodeExpiresAt,
+            resetStatus: false,
+        }, { new: true });
+
+        await sendResetCode(requestPasswordDto.email, resetCode);
+
+        return { message: 'Password reset code sent to your email.' };
     }
 }

@@ -20,6 +20,15 @@ export class UserDetails extends Document {
 
     @Prop({ required: true, default: false })
     verificationStatus: boolean;
+
+    @Prop({ required: true })
+    resetCode: string;
+
+    @Prop({ required: true })
+    resetCodeExpiresAt: Date;
+
+    @Prop({ required: true, default: false })
+    resetStatus: boolean;
 }
 
 export const UserDetailsSchema = SchemaFactory.createForClass(UserDetails);
