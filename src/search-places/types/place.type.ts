@@ -10,7 +10,7 @@ export class Costs {
     amount: number;
 }
 
-export class Description {
+export class Languages {
     es: string;
     en: string;
     fr: string;

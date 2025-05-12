@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Put, Delete } from '@nestjs/common';
 import { SearchPlacesService } from './search-places.service';
 import { ApiTags } from '@nestjs/swagger';
 import { PlaceDto } from './dto/place.dto';
+import { TreekingDto } from './discriminators/treeking/treeking.dto';
 
 @ApiTags('search-places')
 @Controller('search-places')
@@ -24,8 +25,9 @@ export class SearchPlacesController {
     }
 
     @Post('add-place')
-    async addPlace(@Body() placeDto: PlaceDto) {
-        await this.searchPlacesService.addPlace(placeDto);
+    // add dto as many as discriminators exist, u can use array here too
+    async addPlace(@Body() dto: TreekingDto) {
+        await this.searchPlacesService.addPlace(dto);
         return { message: "Place added successfully" };
     }
 

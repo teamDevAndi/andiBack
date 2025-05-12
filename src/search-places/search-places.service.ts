@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Place } from './schemas/place.schema';
 import { PlaceLocation } from './schemas/place-location.schema';
 import { PlaceDto } from './dto/place.dto';
+import { TreekingDto } from './discriminators/treeking/treeking.dto';
 
 @Injectable()
 export class SearchPlacesService {
@@ -24,7 +25,13 @@ export class SearchPlacesService {
         return await this.placeModel.findById(id).exec();
     }
 
-    async addPlace(placeDto: PlaceDto) {
+    // use dto of every discriminator, u can use an array maybe or just a generic dto (PlaceDto)
+    async addPlace(placeDto: TreekingDto) {
+        const category = placeDto.category;
+
+        if (!["Treeking"]. includes(category))
+            throw new BadRequestException("Invalid category");
+
         const newPlace = new this.placeModel({
             name: placeDto.name,
             picturePrincipal: placeDto.picturePrincipal,

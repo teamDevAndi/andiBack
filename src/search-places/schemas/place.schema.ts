@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose"
-import { Costs, Description, Times } from "../types/place.type";
+import { Costs, Languages, Times } from "../types/place.type";
 
-@Schema({ timestamps: true })
+@Schema({ discriminatorKey: "category", timestamps: true })
 export class Place extends Document {
     @Prop({ required: true })
     name: string;
@@ -29,7 +29,7 @@ export class Place extends Document {
     costs: Costs[];
 
     @Prop({ required: true })
-    description: Description;
+    description: Languages[];
 
     @Prop({ required: true })
     labels: string[];
