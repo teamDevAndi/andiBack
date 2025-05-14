@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserRegisterModule } from './user-register/user-register.module';
-import { AuthModule } from './auth/auth.module'; // 👈 Asegúrate de importar esto
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
