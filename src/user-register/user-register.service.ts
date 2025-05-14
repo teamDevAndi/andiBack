@@ -62,13 +62,19 @@ export class UserRegisterService {
     }
 
     async deleteUser(userId: string) {
-        const user = await this.usersModel.findById(userId);
+        const userDetails = await this.userDetailsModel.findById(userId);
+        if (!userDetails) {
+            throw new BadRequestException('User not found');
+        }
+        const user = await this.usersModel.findByIdAndDelete(userDetails.user_Id);
 
         if (!user) {
             throw new BadRequestException('User not found');
         }
 
-        await this.userDetailsModel.deleteOne({ user_Id: userId });
+        await this.userDetailsModel.findByIdAndDelete(userDetails.user_Id);
+
+        return { message: 'User deleted successfully' };
     }
 
     async requestPasswordReset(requestPasswordDto: RequestPasswordDto) {        
@@ -90,5 +96,28 @@ export class UserRegisterService {
         await sendResetCode(requestPasswordDto.email, resetCode);
 
         return { message: 'Password reset code sent to your email.' };
+    }
+
+    async verifyResetCode(requestPasswordDto: RequestPasswordDto) {
+        const user = await emailExists(requestPasswordDto.email, this.usersModel);
+
+        if (!user.exists) {
+            throw new BadRequestException('Email not registered');
+        }
+
+        const userDetails = await this.userDetailsModel.findOne({ user_Id: (await user).userData._id });
+
+        if (!userDetails || userDetails.resetCode !== requestPasswordDto.resetCode) {
+            throw new BadRequestException('Invalid reset code');
+        }
+
+        if (userDetails.resetCodeExpiresAt < new Date()) {
+            throw new BadRequestException('Reset code expired');
+        }
+
+        userDetails.resetStatus = true;
+
+        return { message: 'Reset code verified successfully.' };
+
     }
 }

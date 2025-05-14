@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { UserRegisterService } from './user-register.service';
 import { ApiTags } from '@nestjs/swagger';
-import { create } from 'domain';
 import { UserDetailsDto } from './dto/user-details.dto';
 import { RequestPasswordDto } from './dto/password-reset/request-password.dto';
 
@@ -29,5 +28,11 @@ export class UserRegisterController {
     async requestPasswordReset(@Body() requestPasswordDto: RequestPasswordDto) {
         await this.userRegisterService.requestPasswordReset(requestPasswordDto);
         return { message: 'If email is registered, a reset code has sent' };
+    }
+
+    @Patch('/verify-reset-code')
+    async verifyResetCode(@Body() requestPasswordDto: RequestPasswordDto) {
+        await this.userRegisterService.verifyResetCode(requestPasswordDto);
+        return { message: 'Reset code verified successfully' };
     }
 }
