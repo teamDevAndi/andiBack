@@ -28,14 +28,14 @@ export class UserRegisterService {
         const hashedPassword = await encryptPassword(userDetailsDto.password);
         const verificationCode = generateVerificationCode();
         const expirationDate = expirationTime(10);
-        
+
         const users = new  this.usersModel({
             email: userDetailsDto.email,
             password: hashedPassword,
         });
 
         const userDetails = new this.userDetailsModel({
-            user_Id: users.id,
+            user_Id: users._id,
             nationality: userDetailsDto.nationality,
             age: userDetailsDto.age,
             verificationCode,
@@ -55,7 +55,20 @@ export class UserRegisterService {
     }
 
     async getUsers() {
-        return await this.usersModel.find().exec();
+        const users = await this.usersModel.find().exec();
+        const userDetails = await this.userDetailsModel.find().exec();
+
+        return { users, userDetails };
+    }
+
+    async deleteUser(userId: string) {
+        const user = await this.usersModel.findById(userId);
+
+        if (!user) {
+            throw new BadRequestException('User not found');
+        }
+
+        await this.userDetailsModel.deleteOne({ user_Id: userId });
     }
 
     async requestPasswordReset(requestPasswordDto: RequestPasswordDto) {        
@@ -68,7 +81,7 @@ export class UserRegisterService {
         const resetCode = generateVerificationCode();
         const resetCodeExpiresAt = expirationTime(10);
 
-        const updatedUser = this.userDetailsModel.findOneAndUpdate((await user).existingUser._id, {
+        const updatedUser = this.userDetailsModel.findOneAndUpdate((await user).userData._id, {
             resetCode: resetCode,
             resetCodeExpiresAt: resetCodeExpiresAt,
             resetStatus: false,
