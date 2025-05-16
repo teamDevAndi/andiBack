@@ -38,7 +38,7 @@ export class UserRegisterService {
             user_Id: users._id,
             nationality: userDetailsDto.nationality,
             age: userDetailsDto.age,
-            verificationCode,
+            verificationCode: verificationCode,
             verificationCodeExpiresAt: expirationDate,
             verificationStatus: false,
             resetCode: null,
@@ -78,17 +78,24 @@ export class UserRegisterService {
             throw new BadRequestException('Email not registered');
         }
 
+        const userDetails = await this.userDetailsModel.findOne({ user_Id: user.userData._id });
+
+        if (!userDetails) {
+            throw new BadRequestException('User details not found');
+        }
+
         const resetCode = generateVerificationCode();
         const resetCodeExpiresAt = expirationTime(10);
 
-        const updatedUser = this.userDetailsModel.findOneAndUpdate((await user).userData._id, {
-            resetCode: resetCode,
-            resetCodeExpiresAt: resetCodeExpiresAt,
-            resetStatus: false,
-        }, { new: true });
+        userDetails.resetCode = resetCode;
+        userDetails.resetCodeExpiresAt = resetCodeExpiresAt;
+        userDetails.resetStatus = false;
+
+        await userDetails.save();
 
         await sendResetCode(requestPasswordDto.email, resetCode);
 
+    
         return { message: 'Password reset code sent to your email.' };
     }
 }

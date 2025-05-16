@@ -13,7 +13,7 @@ export class UserDetails extends Document {
     age: number;
     
     @Prop({ required: true })
-    verificationCode: number;
+    verificationCode: string;
 
     @Prop({ required: true })
     verificationCodeExpiresAt: Date;
