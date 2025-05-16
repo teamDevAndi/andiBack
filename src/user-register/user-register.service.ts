@@ -7,7 +7,7 @@ import { UserDetails } from './schemas/user-details.schema';
 import { Users } from './schemas/users.schema';
 import { sendVerificationEmail } from './helpers/sendVerificationCode';
 import { encryptPassword } from './helpers/encryptPassword';
-import {  generateVerificationCode } from './utils/verificationCodeGenerator';
+import { generateVerificationCode } from './utils/verificationCodeGenerator';
 import { expirationTime } from './utils/expirationTimeGenerator';
 import { emailExists } from './helpers/verificationEmailExists';
 import { RequestPasswordDto } from './dto/password-reset/request-password.dto';
@@ -29,7 +29,7 @@ export class UserRegisterService {
         const verificationCode = generateVerificationCode();
         const expirationDate = expirationTime(10);
 
-        const users = new  this.usersModel({
+        const users = new this.usersModel({
             email: userDetailsDto.email,
             password: hashedPassword,
         });
@@ -77,23 +77,30 @@ export class UserRegisterService {
         return { message: 'User deleted successfully' };
     }
 
-    async requestPasswordReset(requestPasswordDto: RequestPasswordDto) {        
+    async requestPasswordReset(requestPasswordDto: RequestPasswordDto) {
         const user = await emailExists(requestPasswordDto.email, this.usersModel);
 
         if (!user.exists) {
             throw new BadRequestException('Email not registered');
         }
 
+        const userDetails = await this.userDetailsModel.findOne({ user_Id: user.userData._id });
+
+        if (!userDetails) {
+            throw new BadRequestException('User details not found');
+        }
+
         const resetCode = generateVerificationCode();
         const resetCodeExpiresAt = expirationTime(10);
 
-        const updatedUser = this.userDetailsModel.findOneAndUpdate((await user).userData._id, {
-            resetCode: resetCode,
-            resetCodeExpiresAt: resetCodeExpiresAt,
-            resetStatus: false,
-        }, { new: true });
+        userDetails.resetCode = resetCode;
+        userDetails.resetCodeExpiresAt = resetCodeExpiresAt;
+        userDetails.resetStatus = false;
+
+        await userDetails.save();
 
         await sendResetCode(requestPasswordDto.email, resetCode);
+
 
         return { message: 'Password reset code sent to your email.' };
     }
@@ -105,17 +112,23 @@ export class UserRegisterService {
             throw new BadRequestException('Email not registered');
         }
 
-        const userDetails = await this.userDetailsModel.findOne({ user_Id: (await user).userData._id });
+        const userDetails = await this.userDetailsModel.findOne({ user_Id: user.userData._id });
 
-        if (!userDetails || userDetails.resetCode !== requestPasswordDto.resetCode) {
+        if (!userDetails) {
+            throw new BadRequestException('User details not found');
+        }
+
+        if (userDetails.resetCode !== requestPasswordDto.resetCode) {
+            if (userDetails.resetCodeExpiresAt < new Date()) {
+                throw new BadRequestException('Reset code expired');
+            }
             throw new BadRequestException('Invalid reset code');
         }
 
-        if (userDetails.resetCodeExpiresAt < new Date()) {
-            throw new BadRequestException('Reset code expired');
-        }
-
+        userDetails.resetCode = '00000';
         userDetails.resetStatus = true;
+
+        await userDetails.save();
 
         return { message: 'Reset code verified successfully.' };
 
