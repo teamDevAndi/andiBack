@@ -35,6 +35,8 @@ import { ParkingsModule } from './subcategories/parkings/parkings.module';
 import { TransportStopsModule } from './subcategories/transportstops/transportstops.module';
 import { BusTerminalsModule } from './subcategories/busterminals/busterminals.module';
 import { AirportsModule } from './subcategories/airports/airports.module';
+import { PlaceLocationModule } from './placelocations/placelocations.module';
+import { PlaceInformationModule } from './placeinformations/placeinformations.module';
 
 @Module({
   imports: [
@@ -44,6 +46,8 @@ import { AirportsModule } from './subcategories/airports/airports.module';
     MongooseModule.forRoot(process.env.MONGO_URI ?? ''),
     UserRegisterModule,
     PlacesModule,
+    PlaceLocationModule,
+    PlaceInformationModule,
     FacilitiesModule,
     ChurchesModule,
     TrekkingsModule,

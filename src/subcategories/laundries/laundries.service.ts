@@ -16,7 +16,7 @@ export class LaundriesService {
   }
 
   async findAll(): Promise<Laundry[]> {
-    return this.model.find().populate(['place_id', 'service_type', 'payment_methods']).exec();
+    return this.model.find().populate(['place_id', 'service_type', 'payment_methods']).lean();
   }
 
   async findById(id: string): Promise<Laundry> {

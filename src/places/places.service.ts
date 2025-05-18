@@ -17,11 +17,11 @@ export class PlacesService {
   }
 
   async findAll(): Promise<Place[]> {
-    return await this.placeModel.find().exec();
+    return await this.placeModel.find().populate('placelocations').exec();
   }
 
   async findOne(id: string): Promise<Place> {
-    const place = await this.placeModel.findById(id).exec();
+    const place = await this.placeModel.findById(id).populate('placelocations').exec();
     if (!place) {
       throw new NotFoundException(`Lugar con ID ${id} no encontrado`);
     }
