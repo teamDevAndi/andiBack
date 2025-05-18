@@ -16,9 +16,9 @@ export class TranslationBase {
   ge: string;
 }
 
-export const TranslationBaseSchema = new MongooseSchema({
+export const TranslationBaseSchema: MongooseSchema = new MongooseSchema({
   es: { type: String, required: true },
   en: { type: String, required: true },
   fr: { type: String, required: true },
   ge: { type: String, required: true },
-});
+}, { _id: false, id: false });
