@@ -5,6 +5,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { ChurchesService } from './churches.service';
 
@@ -19,8 +20,8 @@ export class ChurchesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.churchesService.findById(id);
+  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
+    return this.churchesService.findOne(id, lang);
   }
 
   @Delete(':id')

@@ -1,6 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
+
 
 export type PlaceDocument = Place & Document;
 
@@ -19,8 +20,8 @@ export class TimeRange {
 }
 
 export class Cost {
-  @Prop({ type: Object, required: true })
-  reason: Translation;
+  @Prop({ type: Types.ObjectId, required: true })
+  reason: Types.ObjectId[];
 
   @Prop({ required: true })
   mount: number;
@@ -49,7 +50,7 @@ export class Place {
   @Prop({ type: [Object], default: [] })
   times: TimeRange[];
 
-  @Prop({ type: [Object], default: [] })
+  @Prop({ type: [Types.ObjectId], default: [] })
   costs: Cost[];
 
   @Prop({ type: Object, required: true })

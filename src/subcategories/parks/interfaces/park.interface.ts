@@ -7,6 +7,6 @@ export interface Park {
   area_size: number;
   facilities: Facility[];
   pet_friendly: boolean;
-  flora_fauna_highlights: string[];
+  flora_fauna_highlights: Translation;
   tips: Translation[];
 }

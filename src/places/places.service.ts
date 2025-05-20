@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
 import { Place } from './interfaces/place.interface';
 import { CreatePlaceDto } from './dto/place.dto';
 
@@ -20,13 +19,25 @@ export class PlacesService {
     return await this.placeModel.find().exec();
   }
 
-  async findOne(id: string): Promise<Place> {
-    const place = await this.placeModel.findById(id).exec();
+  async findOne(id: string, lang = 'en'): Promise<any> {
+    const place = await this.placeModel.findById(id).lean<Place>().exec();
+
     if (!place) {
       throw new NotFoundException(`Lugar con ID ${id} no encontrado`);
     }
-    return place;
+
+    const description_place = place.description_place as Record<string, string>;
+    
+    const description = description_place[lang] || description_place['en'] || '';
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { description_place: _, ...placeWithoutDescriptions } = place;
+
+    return {
+      ...placeWithoutDescriptions,
+      description,
+    };
   }
+
 
   async remove(id: string): Promise<void> {
     const result = await this.placeModel.findByIdAndDelete(id).exec();

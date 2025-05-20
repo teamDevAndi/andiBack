@@ -4,6 +4,7 @@ import {
   IsBoolean,
   IsString,
 } from 'class-validator';
+import { Translation } from 'src/common/interfaces/base.interface';
 
 export class CreateMedicalCenterDto {
   @IsMongoId()
@@ -11,7 +12,7 @@ export class CreateMedicalCenterDto {
 
   @IsArray()
   @IsMongoId({ each: true })
-  specialties: string[];
+  specialties: Translation[];
 
   @IsBoolean()
   emergency_service: boolean;

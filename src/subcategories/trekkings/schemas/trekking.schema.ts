@@ -1,11 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
+import { Place } from 'src/places/interfaces/place.interface';
 
 @Schema()
 export class Trekking extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
-  place_id: Types.ObjectId;
+  place_id: Place;
 
   @Prop({ required: true })
   estimated_duration_minutes: number;
@@ -25,10 +26,10 @@ export class Trekking extends Document {
   @Prop({ required: true })
   wildlife_sightings: boolean;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Equipment' }] })
+  @Prop({ type: [Types.ObjectId], ref: 'Equipment', required: true })
   equipment_required: Types.ObjectId[];
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: [Object], required: true })
   tips: Translation[];
 }
 

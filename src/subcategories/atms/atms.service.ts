@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ATM } from './schemas/atm.schema';
 import { Model } from 'mongoose';
 import { CreateAtmDto } from './dto/atm.dto';
+import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
+import { getTranslation } from 'src/helpers/translation.helper';
 
 @Injectable()
 export class AtmsService {
@@ -19,13 +21,39 @@ export class AtmsService {
     return this.model.find().populate(['place_id', 'currency_available', 'languages_available']).exec();
   }
 
-  async findById(id: string): Promise<ATM> {
-    const atm = await this.model.findById(id)
-    .populate(['place_id', 'currency_available', 'languages_available']).exec();
+  async findOne(id: string, lang = 'en'): Promise<any> {
+    const atm = await this.model
+    .findById(id)
+    .populate(['place_id', 'currency_available', 'languages_available'])
+    .lean<PopulatedPlaceBase>()
+    .exec();
+
     if (!atm) {
       throw new NotFoundException(`ATM with ID "${id}" not found`);
     }
-    return atm;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { description_place, costs, ...restPlace } = atm.place_id
+
+    const translated = {
+      ...atm,
+      place_id: {
+        ...restPlace,
+        description_place: getTranslation(description_place, lang),
+        costs: costs?.map((cost) => ({
+          mount: cost.mount,
+          reason: getTranslation(cost.reason, lang),
+        })),
+      },
+
+      currency_available: atm.currency_available?.map(
+        (opt) => getTranslation( opt,lang),
+      ),
+      languages_available: atm.transport_options?.map(
+        (opt) => getTranslation(opt,lang),
+      ),
+    };
+    
+    return translated;
   }
   
 

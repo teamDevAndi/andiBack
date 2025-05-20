@@ -8,7 +8,8 @@ import {
 export class CreateParkingDto {
   @IsMongoId()
   place_id: string;
-
+  
+  @IsArray()
   @IsMongoId()
   parking_type: string;
 

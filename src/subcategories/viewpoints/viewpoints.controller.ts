@@ -5,6 +5,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { ViewpointsService } from './viewpoints.service';
 
@@ -19,8 +20,8 @@ export class ViewpointsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.viewpointsService.findById(id);
+  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
+    return this.viewpointsService.findOne(id, lang);
   }
 
   @Delete(':id')

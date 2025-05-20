@@ -1,11 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
+import { Place } from 'src/places/interfaces/place.interface';
 
 @Schema({ timestamps: true })
 export class Lake extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
-  place_id: Types.ObjectId;
+  place_id: Place;
 
   @Prop({ required: true })
   surface_area_lake: number;
@@ -16,7 +17,7 @@ export class Lake extends Document {
   @Prop({ required: true })
   altitude: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'WaterType', required: true })
+  @Prop({ type: [Types.ObjectId], ref: 'WaterType', required: true })
   water_type: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'ActivitiesAllowed' }] })

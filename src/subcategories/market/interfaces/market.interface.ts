@@ -4,7 +4,7 @@ import { Translation } from 'src/common/interfaces/base.interface';
 export interface Market {
   _id?: Types.ObjectId;
   place_id: Types.ObjectId;
-  market_type: Types.ObjectId[];
+  market_type: Translation;
   number_of_stalls: number;
   local_producers_only: boolean;
   cash_only: boolean;

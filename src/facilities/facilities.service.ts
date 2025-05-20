@@ -17,10 +17,18 @@ export class FacilitiesService {
     return this.facilityModel.find().exec();
   }
 
-  async findById(id: string): Promise<Facility> {
-    const facility = await this.facilityModel.findById(id).exec();
+  async findOne(id: string, lang = 'en'): Promise<any> {
+    const facility = await this.facilityModel.findById(id).lean<Facility>().exec();
     if (!facility) throw new NotFoundException(`Facility with ID "${id}" not found`);
-    return facility;
+    const name = facility.name as Record<string, string>;
+    const nameF = name[lang] || name['en'] || '';
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { name: _, ...facilityWithoutDescriptions } = facility;
+        return {
+          ...facilityWithoutDescriptions,
+          nameF,
+        };
+
   }
 
   async delete(id: string): Promise<void> {

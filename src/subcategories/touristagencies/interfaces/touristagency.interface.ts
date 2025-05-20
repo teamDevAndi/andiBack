@@ -1,14 +1,15 @@
 import { Types } from 'mongoose';
+import { Translation } from 'src/common/interfaces/base.interface';
 
 export interface TouristAgency {
   _id?: Types.ObjectId;
   place_id: Types.ObjectId;
-  tour_types: Types.ObjectId[];
-  languages_offered: Types.ObjectId[];
-  certifications: Types.ObjectId[];
+  tour_types: Translation[];
+  languages_offered: Translation[];
+  certifications: Translation[];
   custom_tours: boolean;
   online_booking: boolean;
-  payment_methods: Types.ObjectId[];
+  payment_methods: Translation[];
   insurance_included: boolean;
   group_discounts: boolean;
   pick_up_service: boolean;

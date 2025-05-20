@@ -1,4 +1,4 @@
-import { Controller, Get, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Delete, Param, Query } from '@nestjs/common';
 import { SupermarketsService } from './supermarkets.service';
 
 @Controller('supermarkets')
@@ -10,8 +10,8 @@ export class SupermarketsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.service.findOne(id);
+  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
+    return this.service.findOne(id, lang);
   }
 
   @Delete(':id')

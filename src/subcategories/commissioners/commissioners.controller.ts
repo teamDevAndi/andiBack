@@ -1,4 +1,4 @@
-import { Controller, Delete, HttpCode,HttpStatus , Get, Param } from '@nestjs/common';
+import { Controller, Delete, HttpCode,HttpStatus , Get, Param, Query } from '@nestjs/common';
 import { CommissionersService } from './commissioners.service';
 
 @Controller('commissioners')
@@ -11,8 +11,9 @@ export class CommissionersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.commissionerService.findById(id);
+  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
+
+    return this.commissionerService.findOne(id, lang);
   }
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

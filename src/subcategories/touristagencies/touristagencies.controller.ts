@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Body, Delete, Query } from '@nestjs/common';
 import { TouristAgenciesService } from './touristagencies.service';
 
 
@@ -12,8 +12,8 @@ export class TouristAgenciesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.service.findById(id);
+  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
+    return this.service.findOne(id, lang);
   }
 
   @Delete(':id')

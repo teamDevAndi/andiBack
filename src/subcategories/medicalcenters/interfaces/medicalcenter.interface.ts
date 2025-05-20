@@ -1,15 +1,16 @@
-import { Types } from 'mongoose';
+
+import { Translation } from 'src/common/interfaces/base.interface';
 
 export interface MedicalCenter {
-  _id?: Types.ObjectId;
-  place_id: Types.ObjectId;
-  specialties: Types.ObjectId[];
+  _id?: string;
+  place_id: string;
+  specialties: Translation[];
   emergency_service: boolean;
   appointment_required: boolean;
-  insurance_accepted: Types.ObjectId[];
+  insurance_accepted: Translation;
   pharmacy_available: boolean;
   ambulance_service: boolean;
-  language_support: Types.ObjectId[];
+  language_support: Translation;
   parking_available: boolean;
   telemedicine_available: boolean;
   phone_number: string;

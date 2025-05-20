@@ -3,7 +3,7 @@ import { Translation } from 'src/common/interfaces/base.interface';
 export interface FoodArea {
   _id?: string;
   place_id: string;
-  vendor_types: string[];
+  vendor_types: Translation;
   number_of_stalls: number;
   price_range: number;
   seating_capacity: number;
