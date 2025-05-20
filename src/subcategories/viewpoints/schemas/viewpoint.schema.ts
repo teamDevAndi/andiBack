@@ -1,16 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
+import { Place } from 'src/places/interfaces/place.interface';
 
 @Schema()
 export class Viewpoint extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
-  place_id: Types.ObjectId;
+  place_id: Place;
 
   @Prop({ required: true })
   altitude_meters: number;
 
-  @Prop({ type: Types.ObjectId, ref: 'ViewType', required: true })
+  @Prop({ type: [Types.ObjectId], ref: 'ViewType', required: true })
   view_type: string;
 
   @Prop({ required: true })

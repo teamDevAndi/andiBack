@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Hotel } from './schemas/hotel.schema';
 import { CreateHotelDto } from './dto/hotel.dto';
+import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
+import { getTranslation } from 'src/helpers/translation.helper';
 
 @Injectable()
 export class HotelsService {
@@ -16,13 +18,40 @@ export class HotelsService {
     return this.model.find().populate(['place_id', 'room_types', 'amenities', 'language_support']).exec();
   }
 
-  async findById(id: string): Promise<Hotel> {
-    const hotel = await this.model.findById(id)
-    .populate(['place_id', 'room_types', 'amenities', 'language_support']).exec();
+  async findOne(id: string, lang= 'en'): Promise<any> {
+    const hotel = await this.model
+    .findById(id)
+    .populate(['place_id', 'room_types', 'amenities', 'language_support'])
+    .lean<PopulatedPlaceBase>()
+    .exec();
     if (!hotel) {
       throw new NotFoundException(`Hotel with ID "${id}" not found`);
     }
-    return hotel;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { description_place, costs, ...restPlace } = hotel.place_id
+
+    const translated = {
+      ...hotel,
+      place_id: {
+        ...restPlace,
+        description_place: getTranslation(description_place, lang),
+        costs: costs?.map((cost) => ({
+          mount: cost.mount,
+          reason: getTranslation(cost.reason, lang),
+        })),
+      },
+      room_types: hotel.room_types?.map(
+        (opt) => getTranslation( opt,lang),
+      ),
+      amenities: hotel.amenities?.map(
+        (opt) => getTranslation( opt,lang),
+      ),
+      language_support: hotel.language_support?.map(
+        (opt) => getTranslation( opt,lang),
+      ),
+    };
+
+    return translated;
   }
 
   async delete(id: string): Promise<{ deleted: boolean }> {

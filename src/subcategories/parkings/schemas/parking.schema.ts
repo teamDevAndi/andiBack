@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { Place } from 'src/places/interfaces/place.interface';
 
 @Schema({ versionKey: false })
 export class Parking extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
-  place_id: Types.ObjectId;
+  place_id: Place;
 
-  @Prop({ type: Types.ObjectId, ref: 'ParkingType', required: true })
+  @Prop({ type: [Types.ObjectId], ref: 'ParkingType', required: true })
   parking_type: Types.ObjectId;
 
   @Prop({ required: true })

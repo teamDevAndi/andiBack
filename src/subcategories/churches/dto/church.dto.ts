@@ -7,7 +7,7 @@ export class CreateChurchDto {
   place_id: string;
 
   @IsMongoId()
-  denomination: string;
+  denomination: Translation;
 
   @IsDateString()
   construction_date: Date;

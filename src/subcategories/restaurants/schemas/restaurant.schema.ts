@@ -1,10 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { Place } from 'src/places/interfaces/place.interface';
 
 @Schema()
 export class Restaurant extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
-  place_id: Types.ObjectId;
+  place_id: Place;
 
   @Prop({ type: [Types.ObjectId], ref: 'CuisineType' })
   cuisine_type: Types.ObjectId[];
@@ -16,7 +17,7 @@ export class Restaurant extends Document {
   reservation_required: boolean;
 
   @Prop({ type: [Types.ObjectId], ref: 'SpecialDishes' })
-  special_dishes: string[];
+  special_dishes: Types.ObjectId[];
 
   @Prop({ type: [Types.ObjectId], ref: 'DietaryOptions' })
   dietary_options: Types.ObjectId[];

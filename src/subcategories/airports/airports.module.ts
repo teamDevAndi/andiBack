@@ -5,6 +5,7 @@ import { AirportsService } from './airports.service';
 import { AirportsController } from './airports.controller';
 import { TransportType, TransportTypeSchema } from 'src/common/schemas/transport_type.schema';
 import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
+import { PlacesService } from 'src/places/places.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
     ])
   ],
   controllers: [AirportsController],
-  providers: [AirportsService],
+  providers: [AirportsService, PlacesService],
 })
 export class AirportsModule {}

@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Cafe } from './schemas/cafe.schema';
 import { CreateCafeDto } from './dto/cafe.dto';
+import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
+import { getTranslation } from 'src/helpers/translation.helper';
 
 @Injectable()
 export class CafeService {
@@ -15,12 +17,30 @@ export class CafeService {
   async findAll(): Promise<Cafe[]> {
     return this.cafeModel.find().exec();
   }
-
-  async findOne(id: string): Promise<Cafe> {
-    const cafe = await this.cafeModel.findById(id).exec();
+  async findOne(id: string, lang = 'en'): Promise<any> {
+    const cafe = await this.cafeModel
+    .findById(id)
+    .lean<PopulatedPlaceBase>()
+    .exec();
     if (!cafe) throw new NotFoundException('Cafe not found');
-    return cafe;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { description_place, costs, ...restPlace } = cafe.place_id
+
+    const translated = {
+      ...cafe,
+      place_id: {
+        ...restPlace,
+        description_place: getTranslation(description_place, lang),
+        costs: costs?.map((cost) => ({
+          mount: cost.mount,
+          reason: getTranslation(cost.reason, lang),
+        })),
+      },
+    };
+
+    return translated;
   }
+
 
 
   async remove(id: string): Promise<void> {

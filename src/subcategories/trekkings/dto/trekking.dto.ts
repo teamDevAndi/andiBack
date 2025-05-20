@@ -1,6 +1,6 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsArray, IsMongoId } from 'class-validator';
-import { Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
+
 
 export class CreateTrekkingDto {
   @IsMongoId()
@@ -27,7 +27,7 @@ export class CreateTrekkingDto {
 
   @IsArray()
   @IsMongoId({ each: true })
-  equipment_required: Types.ObjectId[];
+  equipment_required: string[];
 
   @IsArray()
   tips: Translation[];

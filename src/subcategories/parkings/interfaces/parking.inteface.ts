@@ -1,14 +1,15 @@
 import { Types } from 'mongoose';
+import { Translation } from 'src/common/interfaces/base.interface';
 
 export interface Parking {
   _id?: Types.ObjectId;
   place_id: Types.ObjectId;
-  parking_type: Types.ObjectId;
+  parking_type: Translation[];
   price_per_hour: number;
   price_per_day: number;
-  payment_methods: Types.ObjectId[];
-  security_features: Types.ObjectId[];
-  vehicle_types_allowed: Types.ObjectId[];
+  payment_methods: Translation[];
+  security_features: Translation;
+  vehicle_types_allowed: Translation;
   parking_capacity_total: number;
   height_restriction: number;
   valet_service: boolean;

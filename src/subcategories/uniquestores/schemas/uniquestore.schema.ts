@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { Place } from 'src/places/interfaces/place.interface';
 
 @Schema()
 export class UniqueStore extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
-  place_id: Types.ObjectId;
+  place_id: Place;
 
   @Prop({ type: [Types.ObjectId], ref: 'Specialization'})
   specialization: Types.ObjectId[];

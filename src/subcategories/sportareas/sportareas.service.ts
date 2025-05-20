@@ -3,7 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SportArea } from './interfaces/sportarea.interface';
 import { CreateSportAreaDto } from './dto/sportarea.dto';
-
+import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
+import { getTranslation } from 'src/helpers/translation.helper';
 
 @Injectable()
 export class SportAreasService {
@@ -17,10 +18,38 @@ export class SportAreasService {
     return this.model.find().populate(['place_id', 'sports_available', 'surface_type', 'facilities']).exec();
   }
 
-  async findOne(id: string): Promise<SportArea> {
-    const result = await this.model.findById(id).populate(['place_id', 'sports_available', 'surface_type', 'facilities']).exec();
+  async findOne(id: string, lang = 'en'): Promise<any> {
+    const result = await this.model
+    .findById(id)
+    .populate(['place_id', 'sports_available', 'surface_type', 'facilities'])
+    .lean<PopulatedPlaceBase>()
+    .exec();
     if (!result) throw new NotFoundException('Sport Area not found');
-    return result;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { description_place, costs, ...restPlace } = result.place_id
+
+    const translated = {
+      ...result,
+      place_id: {
+        ...restPlace,
+        description_place: getTranslation(description_place, lang),
+        costs: costs?.map((cost) => ({
+          mount: cost.mount,
+          reason: getTranslation(cost.reason, lang),
+        })),
+      },
+      surface_type: result.surface_type?.map((item) =>
+        getTranslation(item, lang),
+      ),
+      sports_available: result.sports_available?.map((item) =>
+        getTranslation(item, lang),
+      ),
+      tips: result.tips?.map((tip) => getTranslation(tip, lang)),
+
+      facilities: result.facilities?.map((fac) => getTranslation(fac, lang)),
+    };
+
+    return translated;
   }
 
   remove(id: string) {
