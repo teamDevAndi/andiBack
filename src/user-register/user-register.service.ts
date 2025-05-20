@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -12,6 +12,8 @@ import { expirationTime } from './utils/expirationTimeGenerator';
 import { emailExists } from './helpers/verificationEmailExists';
 import { RequestPasswordDto } from './dto/password-reset/request-password.dto';
 import { sendResetCode } from './helpers/sendResetCode';
+import { ResetPasswordDto } from './dto/password-reset/reset-password.dto';
+
 
 @Injectable()
 export class UserRegisterService {
@@ -119,7 +121,7 @@ export class UserRegisterService {
         }
 
         if (userDetails.resetCode !== requestPasswordDto.resetCode) {
-            if (userDetails.resetCodeExpiresAt < new Date()) {
+            if (!userDetails.resetCodeExpiresAt || userDetails.resetCodeExpiresAt < new Date()) {
                 throw new BadRequestException('Reset code expired');
             }
             throw new BadRequestException('Invalid reset code');
@@ -132,5 +134,31 @@ export class UserRegisterService {
 
         return { message: 'Reset code verified successfully.' };
 
+    }
+
+    async resetPassword(dto: ResetPasswordDto) {
+        const { email, verificationCode, newPassword, confirmPassword } = dto;
+        if (newPassword !== confirmPassword) {
+            throw new BadRequestException('Las contraseñas no coinciden');
+        }
+        const userDetails = await this.userDetailsModel.findOne({ email });
+        if (!userDetails) {
+            throw new NotFoundException('Usuario no encontrado');
+        }
+        if (!userDetails.verificationCode || userDetails.verificationCode.toString() !== verificationCode) {
+            throw new BadRequestException('Código de verificación incorrecto');
+        }
+        if (!userDetails.verificationCodeExpiresAt || userDetails.verificationCodeExpiresAt < new Date()) {
+            throw new BadRequestException('El código de verificación ha expirado');
+        }
+        const hashed = await encryptPassword(newPassword);
+        await this.usersModel.updateOne(
+            { _id: userDetails.user_Id },
+            { password: hashed },
+        );
+        userDetails.verificationCode = null;
+        userDetails.verificationCodeExpiresAt = null;
+        userDetails.verificationStatus = true;
+        await userDetails.save();
     }
 }

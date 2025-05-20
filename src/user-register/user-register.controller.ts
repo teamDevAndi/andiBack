@@ -3,6 +3,7 @@ import { UserRegisterService } from './user-register.service';
 import { ApiTags } from '@nestjs/swagger';
 import { UserDetailsDto } from './dto/user-details.dto';
 import { RequestPasswordDto } from './dto/password-reset/request-password.dto';
+import { ResetPasswordDto } from './dto/password-reset/reset-password.dto';
 
 @ApiTags('auth')
 @Controller('/api/auth')
@@ -34,5 +35,11 @@ export class UserRegisterController {
     async verifyResetCode(@Body() requestPasswordDto: RequestPasswordDto) {
         await this.userRegisterService.verifyResetCode(requestPasswordDto);
         return { message: 'Reset code verified successfully' };
+    }
+
+    @Patch('/reset-password')
+    async resetPassword(@Body() dto: ResetPasswordDto) {
+        await this.userRegisterService.resetPassword(dto);
+        return { message: 'Password changed successfully' };
     }
 }
