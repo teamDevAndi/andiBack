@@ -16,11 +16,11 @@ export class PlaceLocationService {
   }
 
   async findAll(): Promise<PlaceLocation[]> {
-    return this.placeLocationModel.find().populate('id_place');
+    return this.placeLocationModel.find().populate('place_id');
   }
 
   async findById(id: string): Promise<PlaceLocation> {
-    const location = await this.placeLocationModel.findById(id).populate('id_place');
+    const location = await this.placeLocationModel.findById(id).populate('place_id');
     if (!location) throw new NotFoundException('Ubicación no encontrada');
     return location;
   }

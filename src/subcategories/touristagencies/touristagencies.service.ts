@@ -24,7 +24,17 @@ export class TouristAgenciesService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const touristAgency = await this.model
     .findById(id)
-    .populate(['place_id', 'tour_types', 'languages_offered', 'certifications', 'payment_methods',])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {path: 'tour_types',},
+      {path: 'languages_offered',},
+      {path: 'certifications',},
+      {path: 'payment_methods',},])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!touristAgency) {

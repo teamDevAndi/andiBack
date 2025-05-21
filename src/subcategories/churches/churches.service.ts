@@ -27,7 +27,14 @@ export class ChurchesService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const church = await this.churchModel
     .findById(id)
-    .populate(['place_id', 'denomination','architectural_style','facilities','nearby_facilities'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {path: 'denomination',},{path: 'architectural_style',},{path: 'facilities',},{path: 'nearby_facilities',}])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!church) {

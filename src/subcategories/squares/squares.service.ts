@@ -24,7 +24,19 @@ export class SquaresService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const result = await this.squareModel
     .findById(id)
-    .populate(['place_id', 'attractions', 'nearby_facilities'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'attractions',
+      },
+      {
+        path: 'nearby_facilities',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!result) throw new NotFoundException('Square not found');

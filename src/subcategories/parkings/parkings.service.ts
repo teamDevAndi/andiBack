@@ -24,7 +24,17 @@ export class ParkingsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const parking = await this.model
     .findById(id)
-    .populate(['place_id', 'parking_type', 'payment_methods', 'security_features', 'vehicle_types_allowed'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      { path: 'parking_type',},
+      { path: 'payment_methods',},
+      { path: 'security_features',},
+      { path: 'vehicle_types_allowed',},])
     .lean<PopulatedPlaceBase>()
     .exec();
 

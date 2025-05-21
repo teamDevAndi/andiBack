@@ -21,7 +21,14 @@ export class TheatersService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const theater = await this.theaterModel
     .findById(id)
-    .populate('place_id')
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+    ])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!theater) throw new NotFoundException('Theater not found');

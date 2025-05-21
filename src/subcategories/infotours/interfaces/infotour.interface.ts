@@ -7,7 +7,7 @@ export interface Infotour {
   language_support: Translation;
   phone_number: string;
   souvenirs_available: boolean;
-  wifi: boolean;
+  wifi_available: boolean;
   parking_available: boolean;
   charging_stations: boolean;
 }

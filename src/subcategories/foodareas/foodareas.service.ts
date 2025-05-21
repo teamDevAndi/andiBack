@@ -22,7 +22,16 @@ export class FoodAreasService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const found = await this.foodAreaModel
     .findById(id)
-    .populate(['place_id','vendor_types'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'vendor_types',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!found) throw new NotFoundException('FoodArea not found');

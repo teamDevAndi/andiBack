@@ -21,7 +21,19 @@ export class MonumentsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const monument = await this.model
     .findById(id)
-    .populate(['place_id', 'material_used', 'nearby_facilities'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'material_used',
+      },
+      {
+        path: 'nearby_facilities',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!monument) throw new NotFoundException('Monument not found');

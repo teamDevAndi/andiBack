@@ -21,7 +21,19 @@ export class RestaurantsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const restaurant = await this.restaurantModel
     .findById(id)
-    .populate(['place_id', 'cuisine_type', 'dietary_options'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'cuisine_type',
+      },
+      {
+        path: 'dietary_options',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!restaurant) throw new NotFoundException('Restaurant not found');

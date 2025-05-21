@@ -21,7 +21,22 @@ export class SportAreasService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const result = await this.model
     .findById(id)
-    .populate(['place_id', 'sports_available', 'surface_type', 'facilities'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'sports_available',
+      },
+      {
+        path: 'surface_type',
+      },
+      {
+        path: 'facilities',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!result) throw new NotFoundException('Sport Area not found');

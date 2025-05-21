@@ -21,7 +21,22 @@ export class HotelsService {
   async findOne(id: string, lang= 'en'): Promise<any> {
     const hotel = await this.model
     .findById(id)
-    .populate(['place_id', 'room_types', 'amenities', 'language_support'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'room_types',
+      },
+      {
+        path: 'amenities',
+      },
+      {
+        path: 'language_support',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!hotel) {

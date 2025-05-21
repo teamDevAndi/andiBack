@@ -27,7 +27,16 @@ export class TrekkingsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const trekking = await this.trekkingModel
       .findById(id)
-      .populate(['place_id', 'equipment_required'])
+      .populate([
+        {
+          path: 'place_id',
+          populate: {
+            path: 'place_location',
+          },
+        },
+        {
+          path: 'equipment_required',
+        },])
       .lean<PopulatedPlaceBase>()
       .exec();
 

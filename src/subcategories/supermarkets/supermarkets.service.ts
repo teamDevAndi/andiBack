@@ -21,7 +21,19 @@ export class SupermarketsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const market = await this.model
     .findById(id)
-    .populate(['place_id', 'product_categories', 'payment_methods'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'product_categories',
+      },
+      {
+        path: 'payment_methods',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!market) throw new NotFoundException('Supermarket not found');

@@ -24,7 +24,19 @@ export class AtmsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const atm = await this.model
     .findById(id)
-    .populate(['place_id', 'currency_available', 'languages_available'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'currency_available',
+      },
+      {
+        path: 'languages_available',
+      }])
     .lean<PopulatedPlaceBase>()
     .exec();
 

@@ -1,4 +1,4 @@
-export interface Restaurant {
+export interface Cafe {
   _id?: string;
   place_id: string;
   price_range: number;
