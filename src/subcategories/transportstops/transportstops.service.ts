@@ -24,7 +24,19 @@ export class TransportStopsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const transportStop = await this.model
     .findById(id)
-    .populate(['place_id', 'transport_type', 'lines_available'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'transport_type',
+      },
+      {
+        path: 'lines_available',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!transportStop) {

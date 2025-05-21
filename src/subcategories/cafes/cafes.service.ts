@@ -21,6 +21,13 @@ export class CafeService {
     const cafe = await this.cafeModel
     .findById(id)
     .lean<PopulatedPlaceBase>()
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },])
     .exec();
     if (!cafe) throw new NotFoundException('Cafe not found');
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

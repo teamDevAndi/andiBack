@@ -67,3 +67,13 @@ export class Place {
 }
 
 export const PlaceSchema = SchemaFactory.createForClass(Place);
+
+PlaceSchema.virtual('place_location', {
+  ref: 'PlaceLocation',
+  localField: '_id',
+  foreignField: 'id_place',
+  justOne: true,
+});
+
+PlaceSchema.set('toObject', { virtuals: true });
+PlaceSchema.set('toJSON', { virtuals: true });

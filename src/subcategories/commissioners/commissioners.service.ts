@@ -24,7 +24,16 @@ export class CommissionersService {
   async findOne(id: string, lang= 'en'): Promise<any> {
     const commissioner = await this.model
     .findById(id)
-    .populate(['place_id', 'language_support'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'language_support',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!commissioner) {

@@ -21,7 +21,16 @@ export class MuseumsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const museum = await this.museumModel
     .findById(id)
-    .populate(['place_id', 'collection_type'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'collection_type',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!museum) throw new NotFoundException('Museum not found');

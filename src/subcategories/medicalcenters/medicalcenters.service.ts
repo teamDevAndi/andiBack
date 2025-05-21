@@ -21,7 +21,22 @@ export class MedicalCentersService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const medical = await this.model
     .findById(id)
-    .populate(['place_id', 'specialties', 'insurance_accepted', 'language_support'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'specialties',
+      },
+      {
+        path: 'insurance_accepted',
+      },
+      {
+        path: 'language_support',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!medical) throw new NotFoundException('Medical center not found');

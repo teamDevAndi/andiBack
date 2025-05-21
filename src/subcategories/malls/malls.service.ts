@@ -21,7 +21,19 @@ export class MallsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const mall = await this.model
     .findById(id)
-    .populate(['place_id', 'store_types', 'entertainment_area'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'store_types',
+      },
+      {
+        path: 'entertainment_area',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!mall) throw new NotFoundException('Mall not found');

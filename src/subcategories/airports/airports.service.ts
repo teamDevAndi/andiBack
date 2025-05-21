@@ -23,7 +23,20 @@ export class AirportsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const airport = await this.model
       .findById(id)
-      .populate(['place_id', 'transport_options', 'facilities'])
+      .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'transport_options',
+      },
+      {
+        path: 'facilities',
+      },
+      ])
       .lean<PopulatedPlaceBase>()
       .exec() ;
 

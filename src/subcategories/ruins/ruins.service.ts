@@ -22,7 +22,16 @@ export class RuinsService {
 
     const ruin = await this.ruinModel
     .findById(id)
-    .populate('place_id historical_period')
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'historical_period',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec()
 

@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
 import { Place } from 'src/places/interfaces/place.interface';
 
-@Schema({ timestamps: true })
+@Schema()
 export class Lake extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
   place_id: Place;

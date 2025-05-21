@@ -26,7 +26,14 @@ export class LakesService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const lake = await this.lakeModel
     .findById(id)
-    .populate(['place_id', 'water_type','activities_allowed', 'flora_fauna_highlights', 'facilities'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      { path: 'water_type',}, { path: 'activities_allowed',},{ path: 'flora_fauna_highlights'},{path: 'facilities',},])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!lake) {

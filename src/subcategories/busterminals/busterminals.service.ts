@@ -25,7 +25,16 @@ export class BusTerminalsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const busTerminal = await this.model
     .findById(id)
-    .populate(['place_id', 'facilities'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'facilities',
+      }])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!busTerminal) {

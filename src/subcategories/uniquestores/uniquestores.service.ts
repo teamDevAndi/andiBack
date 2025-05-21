@@ -21,7 +21,20 @@ export class UniqueStoresService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const store = await this.model
     .findById(id)
-    .populate('place_id specialization exclusive_items')
+      .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'specialization',
+      },
+      {
+        path: 'exclusive_items',
+      },
+      ])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!store) throw new NotFoundException('Unique store not found');

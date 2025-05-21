@@ -15,7 +15,7 @@ export class CreateInfotourDto {
   souvenirs_available: boolean;
 
   @IsBoolean()
-  wifi: boolean;
+  wifi_available: boolean;
 
   @IsBoolean()
   parking_available: boolean;

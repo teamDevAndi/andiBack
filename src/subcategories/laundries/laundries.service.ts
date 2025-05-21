@@ -24,7 +24,19 @@ export class LaundriesService {
   async findOne(id: string, lang= 'en'): Promise<any> {
     const laundry = await this.model
     .findById(id)
-    .populate(['place_id', 'service_type', 'payment_methods'])
+      .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'service_type',
+      },
+      {
+        path: 'payment_methods',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!laundry) {

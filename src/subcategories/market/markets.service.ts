@@ -22,7 +22,16 @@ export class MarketsService {
 
     const market = await this.model
     .findById(id)
-    .populate('place_id market_type')
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'market_type',
+      },])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!market) throw new NotFoundException('Market not found');

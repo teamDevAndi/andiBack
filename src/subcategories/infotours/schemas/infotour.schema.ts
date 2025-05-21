@@ -17,7 +17,7 @@ export class Infotour extends Document {
   souvenirs_available: boolean;
 
   @Prop({ required: true })
-  wifi: boolean;
+  wifi_available: boolean;
 
   @Prop({ required: true })
   parking_available: boolean;

@@ -26,7 +26,17 @@ export class ViewpointsService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const viewpoint = await this.viewpointModel
     .findById(id)
-    .populate(['place_id','view_type'])
+    .populate([
+      {
+        path: 'place_id',
+        populate: {
+          path: 'place_location',
+        },
+      },
+      {
+        path: 'view_type',
+      },
+      ])
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!viewpoint) {

@@ -25,7 +25,19 @@ export class ParksService {
   async findOne(id: string, lang = 'en'): Promise<any> {
     const park = await this.parkModel
       .findById(id)
-      .populate(['place_id', 'flora_fauna_highlights', 'facilities'])
+      .populate([
+        {
+          path: 'place_id',
+          populate: {
+            path: 'place_location',
+          },
+        },
+        {
+          path: 'flora_fauna_highlights',
+        },
+        {
+          path: 'facilities',
+        },])
       .lean<PopulatedPlaceBase>()
       .exec();
 
