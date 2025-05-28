@@ -38,6 +38,8 @@ import { BusTerminalsModule } from './subcategories/busterminals/busterminals.mo
 import { AirportsModule } from './subcategories/airports/airports.module';
 import { PlaceLocationModule } from './placelocations/placelocations.module';
 import { PlaceInformationModule } from './placeinformations/placeinformations.module';
+import { WhatsappModule } from './whatsapp/whatsapp.module';
+
 
 @Module({
   imports: [
@@ -80,6 +82,7 @@ import { PlaceInformationModule } from './placeinformations/placeinformations.mo
     TransportStopsModule,
     BusTerminalsModule,
     AirportsModule,
+    WhatsappModule
   ],
   controllers: [AppController],
   providers: [AppService],
