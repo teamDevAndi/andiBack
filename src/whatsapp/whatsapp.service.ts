@@ -92,7 +92,7 @@ export class WhatsappService implements OnModuleInit {
         }
       )
 
-      await this.sendMessage(from, response.data.reply + 'https://www.google.com');
+      await this.sendMessage(from, response.data.reply);
     });
   }
 
