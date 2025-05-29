@@ -52,6 +52,7 @@ export class RuinsService {
       historical_period: ruin.historical_period?.map((item) =>
         getTranslation(item, lang),
       ),
+      photography_policy: getTranslation(ruin.photography_policy ?? {},lang),
 
       nearby_facilities: ruin.nearby_facilities?.map((fac) => getTranslation(fac, lang)),
     };

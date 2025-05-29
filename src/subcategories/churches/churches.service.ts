@@ -42,10 +42,6 @@ export class ChurchesService {
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = church.place_id
-    const policyArray = Array.isArray(church.photography_policy)
-      ? church.photography_policy
-      : [church.photography_policy]; 
-
     const translated = {
       ...church,
       place_id: {
@@ -69,7 +65,7 @@ export class ChurchesService {
       denomination: church.denomination?.map(
         (obj) => getTranslation(obj,lang),
       ),
-      photography_policy: policyArray.map((item) => getTranslation(item, lang)),
+      photography_policy: getTranslation( church.photography_policy ?? {},lang),
     };
 
     return translated;

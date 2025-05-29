@@ -1,5 +1,4 @@
 import { Translation } from 'src/common/interfaces/base.interface';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
 
 
 export interface SportArea {
@@ -7,7 +6,7 @@ export interface SportArea {
   place_id: string;
   sports_available: Translation[];
   surface_type: Translation;
-  facilities: Facility[];
+  facilities: Translation;
   tips: Translation[];
   phone_number: string;
 }

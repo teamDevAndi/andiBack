@@ -15,7 +15,7 @@ export class CafeService {
   }
 
   async findAll(): Promise<Cafe[]> {
-    return this.cafeModel.find().exec();
+    return this.cafeModel.find().populate('place_id').exec();
   }
   async findOne(id: string, lang = 'en'): Promise<any> {
     const cafe = await this.cafeModel

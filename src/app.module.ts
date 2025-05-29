@@ -6,7 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserRegisterModule } from './user-register/user-register.module';
 import { AuthModule } from './auth/auth.module';
-import { FacilitiesModule } from './facilities/facilities.module';
 import { ChurchesModule } from './subcategories/churches/churches.module';
 import { TrekkingsModule } from './subcategories/trekkings/trekkings.module';
 import { ViewPointsModule } from './subcategories/viewpoints/viewpoints.module';
@@ -40,7 +39,6 @@ import { PlaceLocationModule } from './placelocations/placelocations.module';
 import { PlaceInformationModule } from './placeinformations/placeinformations.module';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -52,7 +50,6 @@ import { WhatsappModule } from './whatsapp/whatsapp.module';
     PlacesModule,
     PlaceLocationModule,
     PlaceInformationModule,
-    FacilitiesModule,
     ChurchesModule,
     TrekkingsModule,
     ViewPointsModule,

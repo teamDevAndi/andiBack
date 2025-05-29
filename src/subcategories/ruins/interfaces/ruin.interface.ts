@@ -1,5 +1,4 @@
 import { Translation } from 'src/common/interfaces/base.interface';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
 import { Types } from 'mongoose';
 
 export interface Ruin {
@@ -10,5 +9,5 @@ export interface Ruin {
   conservation_status: number;
   visit_duration: number;
   photography_policy: Translation[];
-  nearby_facilities: Facility[];
+  nearby_facilities: Translation;
 }
