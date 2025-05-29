@@ -1,6 +1,4 @@
 import { Translation } from 'src/common/interfaces/base.interface';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
-
 
 export interface Lake {
   _id?: string;
@@ -11,7 +9,7 @@ export interface Lake {
   water_type: Translation;
   activities_allowed: Translation;
   flora_fauna_highlights: Translation;
-  facilities: Facility[];
+  facilities: Translation;
   safety_information: Translation[];
   tips: Translation[];
 }

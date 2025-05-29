@@ -6,6 +6,7 @@ import { Church, ChurchSchema } from './schemas/church.schema';
 import { Denomination, DenominationSchema } from './schemas/denomination.schema';
 import { ArchitecturalStyle, ArchitecturalStyleSchema } from './schemas/architectural_style.schema';
 import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
+import { Facility, FacilitySchema } from 'src/common/schemas/facility.schema';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
       { name: Church.name, schema: ChurchSchema },
       { name: Denomination.name, schema: DenominationSchema },
       { name: ArchitecturalStyle.name, schema: ArchitecturalStyleSchema },
+      { name: Facility.name, schema: FacilitySchema },
       { name: Place.name, schema: PlaceSchema },
     ]),
   ],

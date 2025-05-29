@@ -1,6 +1,5 @@
 import { Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
 
 export interface Museum {
   _id?: Types.ObjectId;
@@ -11,6 +10,6 @@ export interface Museum {
   photography_policy: Translation[];
   shop_available: boolean;
   visit_duration: number;
-  facilities: Facility[];
+  facilities: Translation;
   phone_number: string;
 }
