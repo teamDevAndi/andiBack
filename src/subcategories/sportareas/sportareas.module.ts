@@ -6,6 +6,7 @@ import { SportArea, SportAreaSchema } from './schemas/sportarea.schema';
 import { SurfaceTypes, SurfaceTypesSchema } from './schemas/surfaceTypes.chema';
 import { Sports, SportsSchema } from './schemas/sports.schema';
 import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
+import { Facility, FacilitySchema } from 'src/common/schemas/facility.schema';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
       { name: SportArea.name, schema: SportAreaSchema },
       { name: Sports.name, schema: SportsSchema },
       { name: SurfaceTypes.name, schema: SurfaceTypesSchema },
+      { name: Facility.name, schema: FacilitySchema },
       { name: Place.name, schema: PlaceSchema },
     ]),
   ],
