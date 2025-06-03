@@ -38,6 +38,8 @@ import { AirportsModule } from './subcategories/airports/airports.module';
 import { PlaceLocationModule } from './placelocations/placelocations.module';
 import { PlaceInformationModule } from './placeinformations/placeinformations.module';
 import { WhatsappModule } from './whatsapp/whatsapp.module';
+import { WaitlistModule } from './waitlist/waitlist.module';
+import { WaitlistNumbersModule } from './waitlist-numbers/waitlist-numbers.module';
 
 @Module({
   imports: [
@@ -79,7 +81,9 @@ import { WhatsappModule } from './whatsapp/whatsapp.module';
     TransportStopsModule,
     BusTerminalsModule,
     AirportsModule,
-    WhatsappModule
+    WhatsappModule,
+    WaitlistModule,
+    WaitlistNumbersModule
   ],
   controllers: [AppController],
   providers: [AppService],
