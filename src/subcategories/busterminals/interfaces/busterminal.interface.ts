@@ -1,12 +1,12 @@
 import { Types } from 'mongoose';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
+import { Translation } from 'src/common/interfaces/base.interface';
 
 
 export interface BusTerminal {
   _id?: Types.ObjectId;
   place_id: Types.ObjectId;
   ticket_sales: boolean;
-  facilities: Facility[];
+  facilities: Translation;
   parking_available: boolean;
   wifi_available: boolean;
   luggage_storage: boolean;

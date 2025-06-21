@@ -1,6 +1,5 @@
 import { Translation } from 'src/common/interfaces/base.interface';
 import { Types } from 'mongoose';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
 
 export interface Church {
   _id?: Types.ObjectId;
@@ -10,7 +9,7 @@ export interface Church {
   architectural_style: Translation[];
   internal_guide: boolean;
   photography_policy: Translation[];
-  facilities: Facility[];
-  nearby_facilities: Facility[];
+  facilities: Translation;
+  nearby_facilities: Translation;
   phone_number: string;
 }

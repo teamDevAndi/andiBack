@@ -14,9 +14,25 @@ export class PlacesService {
     const newPlace = new this.placeModel(createPlaceDto);
     return await newPlace.save();
   }
+  async findAll(lang = 'en', categories?: string[]): Promise<any[]> {
+    const filter: Record<string, unknown> = {};
+    if (categories?.length) {
+      filter['category'] = { $in: categories };
+    }
 
-  async findAll(): Promise<Place[]> {
-    return await this.placeModel.find().populate('place_location').exec();
+    const places: Place[] = await this.placeModel.find(filter).lean().exec();
+
+    return places.map((place: Place) => {
+      const description_place = place.description_place as Record<string, string> | undefined;
+      const description = description_place?.[lang] || description_place?.['en'] || '';
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { description_place: _, ...placeWithoutDescriptions } = place;
+
+      return {
+        ...placeWithoutDescriptions,
+        description,
+      };
+    });
   }
 
   async findOne(id: string, lang = 'en'): Promise<any> {

@@ -3,12 +3,12 @@ import { Document, Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
 import { Place } from 'src/places/interfaces/place.interface';
 
-@Schema()
+@Schema({ versionKey: false })
 export class Museum extends Document {
   @Prop({ type: Types.ObjectId, ref: 'Place', required: true })
   place_id: Place;
 
-  @Prop({ type: [Types.ObjectId], ref: 'CollectionType'})
+  @Prop({ type: [Types.ObjectId], ref: 'CollectionTypes'})
   collection_type: Types.ObjectId[];
 
   @Prop({ default: false })
@@ -18,7 +18,7 @@ export class Museum extends Document {
   family_friendly: boolean;
 
   @Prop({ type: Object, required: true })
-  photography_policy: Translation;
+  photography_policy: Translation[];
 
   @Prop({ default: false })
   shop_available: boolean;

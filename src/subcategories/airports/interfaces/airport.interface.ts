@@ -1,5 +1,4 @@
 import { Types } from 'mongoose';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
 import { Translation } from 'src/common/interfaces/base.interface';
 
 
@@ -10,5 +9,5 @@ export interface Airport {
   transport_options: Translation;
   luggage_storage: boolean;
   wifi_available: boolean;
-  facilities: Facility[];
+  facilities: Translation;
 }

@@ -22,7 +22,7 @@ export interface PopulatedPlaceBase {
 
   denomination?: Translation[];
   architectural_style?: Translation[];
-  photography_policy?: Translation[];
+  photography_policy?: Translation;
   nearby_facilities?: Translation[];
 
   language_support?: Translation[];

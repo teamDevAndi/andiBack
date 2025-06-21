@@ -7,6 +7,7 @@ import { WaterType, WaterTypeSchema } from './schemas/water_type.schema';
 import { ActivitiesAllowed, ActivitiesAllowedSchema } from './schemas/activities_allowed.schema';
 import { FloraFauna, FloraFaunaSchema } from 'src/common/schemas/flora_fauna_highlights.schema';
 import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
+import { Facility, FacilitySchema } from 'src/common/schemas/facility.schema';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Place, PlaceSchema } from 'src/places/schemas/place.schema';
       { name: WaterType.name, schema: WaterTypeSchema },
       { name: ActivitiesAllowed.name, schema: ActivitiesAllowedSchema },
       { name: FloraFauna.name, schema: FloraFaunaSchema },
+      { name: Facility.name, schema: FacilitySchema },
       { name: Place.name, schema: PlaceSchema },
     ]),
   ],

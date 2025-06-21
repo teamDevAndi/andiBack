@@ -1,6 +1,5 @@
 import { Types } from 'mongoose';
 import { Translation } from 'src/common/interfaces/base.interface';
-import { Facility } from 'src/facilities/interfaces/facility.interface';
 
 
 export interface Monument {
@@ -9,5 +8,5 @@ export interface Monument {
   construction_date: Date;
   material_used: Translation;
   height: number;
-  nearby_facilities: Facility[];
+  nearby_facilities: Translation;
 }

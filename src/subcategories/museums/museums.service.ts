@@ -8,14 +8,16 @@ import { getTranslation } from 'src/helpers/translation.helper';
 
 @Injectable()
 export class MuseumsService {
-  constructor(@InjectModel(Museum.name) private museumModel: Model<Museum>) {}
+  constructor(
+    @InjectModel(Museum.name) private readonly museumModel: Model<Museum>,
+  ) {}
 
   async create(dto: CreateMuseumDto): Promise<Museum> {
     return this.museumModel.create(dto);
   }
 
   async findAll(): Promise<Museum[]> {
-    return this.museumModel.find().populate(['place_id', 'collection_type']).exec();
+    return this.museumModel.find().populate('place_id').exec();
   }
 
   async findOne(id: string, lang = 'en'): Promise<any> {
@@ -30,6 +32,9 @@ export class MuseumsService {
       },
       {
         path: 'collection_type',
+      },
+      {
+        path: 'facilities',
       },])
     .lean<PopulatedPlaceBase>()
     .exec();
@@ -51,9 +56,8 @@ export class MuseumsService {
       collection_type: museum.collection_type?.map(
         (opt) => getTranslation( opt,lang),
       ),
-      photography_policy: museum.photography_policy?.map(
-        (opt) => getTranslation( opt,lang),
-      ),
+      photography_policy: getTranslation( museum.photography_policy ?? {},lang),
+
       facilities: museum.facilities?.map(
         (fac) => getTranslation(fac,lang),
       ),
