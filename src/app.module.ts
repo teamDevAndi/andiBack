@@ -5,7 +5,7 @@ import { PlacesModule } from './places/places.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserRegisterModule } from './user-register/user-register.module';
-import { AuthModule } from './auth/auth.module';
+//import { AuthModule } from './auth/auth.module';
 import { ChurchesModule } from './subcategories/churches/churches.module';
 import { TrekkingsModule } from './subcategories/trekkings/trekkings.module';
 import { ViewPointsModule } from './subcategories/viewpoints/viewpoints.module';
@@ -45,7 +45,7 @@ import { WhatsappModule } from './whatsapp/whatsapp.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI ?? ''),
-    AuthModule,
+    //AuthModule,
     UserRegisterModule,
     PlacesModule,
     PlaceLocationModule,
