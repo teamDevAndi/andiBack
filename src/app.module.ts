@@ -5,7 +5,7 @@ import { PlacesModule } from './places/places.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserRegisterModule } from './user-register/user-register.module';
-import { AuthModule } from './auth/auth.module';
+//import { AuthModule } from './auth/auth.module';
 import { ChurchesModule } from './subcategories/churches/churches.module';
 import { TrekkingsModule } from './subcategories/trekkings/trekkings.module';
 import { ViewPointsModule } from './subcategories/viewpoints/viewpoints.module';
@@ -40,6 +40,7 @@ import { PlaceInformationModule } from './placeinformations/placeinformations.mo
 import { WhatsappModule } from './whatsapp/whatsapp.module';
 import { WaitlistModule } from './waitlist/waitlist.module';
 import { WaitlistNumbersModule } from './waitlist-numbers/waitlist-numbers.module';
+import { PlaceRequestModule } from './placerequest/placerequest.module';
 
 @Module({
   imports: [
@@ -47,7 +48,7 @@ import { WaitlistNumbersModule } from './waitlist-numbers/waitlist-numbers.modul
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI ?? ''),
-    AuthModule,
+    //AuthModule,
     UserRegisterModule,
     PlacesModule,
     PlaceLocationModule,
@@ -83,7 +84,8 @@ import { WaitlistNumbersModule } from './waitlist-numbers/waitlist-numbers.modul
     AirportsModule,
     WhatsappModule,
     WaitlistModule,
-    WaitlistNumbersModule
+    WaitlistNumbersModule,
+    PlaceRequestModule
   ],
   controllers: [AppController],
   providers: [AppService],
