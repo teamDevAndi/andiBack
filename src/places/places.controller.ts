@@ -8,9 +8,14 @@ export class PlacesController {
 
 
   @Get()
-  findAll() {
-    return this.placesService.findAll();
-  }
+  findAll(
+    @Query('lang') lang = 'en',
+    @Query('categories') categories?: string,
+    ) {
+      const categoriesArray = categories ? categories.split(',') : undefined;
+
+      return this.placesService.findAll(lang, categoriesArray);
+    }
 
 
   @Get(':id')
