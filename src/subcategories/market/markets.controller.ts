@@ -10,9 +10,9 @@ export class MarketsController {
     return this.service.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.service.findOne(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.service.findOne(place_id, lang);
   }
 
   @Delete(':id')

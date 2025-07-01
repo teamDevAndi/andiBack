@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateAtmDto } from './dto/atm.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
 import { getTranslation } from 'src/helpers/translation.helper';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class AtmsService {
@@ -21,9 +22,11 @@ export class AtmsService {
     return this.model.find().populate(['place_id', 'currency_available', 'languages_available']).exec();
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const atm = await this.model
-    .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',
@@ -41,7 +44,7 @@ export class AtmsService {
     .exec();
 
     if (!atm) {
-      throw new NotFoundException(`ATM with ID "${id}" not found`);
+      throw new NotFoundException(`ATM with ID "${place_id}" not found`);
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = atm.place_id

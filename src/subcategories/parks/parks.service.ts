@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Park } from './interfaces/park.interface';
 import { CreateParkDto } from './dto/park.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -22,9 +22,11 @@ export class ParksService {
       .exec();
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const park = await this.parkModel
-      .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
       .populate([
         {
           path: 'place_id',
@@ -42,7 +44,7 @@ export class ParksService {
       .exec();
 
     if (!park) {
-      throw new NotFoundException(`Park with ID "${id}" not found`);
+      throw new NotFoundException(`Park with ID "${place_id}" not found`);
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = park.place_id

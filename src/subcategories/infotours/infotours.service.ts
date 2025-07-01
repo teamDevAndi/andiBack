@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Infotour } from './schemas/infotour.schema';
 import { CreateInfotourDto } from './dto/infotour.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -18,9 +18,11 @@ export class InfotoursService {
     return this.model.find().populate(['place_id', 'language_support']).exec();
   }
   
-  async findById(id: string, lang= 'en'): Promise<any> {
+  async findById(place_id: string, lang= 'en'): Promise<any> {
     const infotour = await this.model
-    .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',
@@ -34,7 +36,7 @@ export class InfotoursService {
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!infotour) {
-      throw new NotFoundException(`Infotour with ID "${id}" not found`);
+      throw new NotFoundException(`Infotour with ID "${place_id}" not found`);
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = infotour.place_id

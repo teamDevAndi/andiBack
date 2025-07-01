@@ -10,9 +10,9 @@ export class SquaresController {
     return this.squaresService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.squaresService.findOne(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.squaresService.findOne(place_id, lang);
   }
 
   @Delete(':id')

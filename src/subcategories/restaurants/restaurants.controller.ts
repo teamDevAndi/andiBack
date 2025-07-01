@@ -10,9 +10,9 @@ export class RestaurantsController {
     return this.restaurantService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.restaurantService.findOne(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.restaurantService.findOne(place_id, lang);
   }
 
 

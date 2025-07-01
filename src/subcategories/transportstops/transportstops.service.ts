@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { TransportStop } from './schemas/transportstop.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateTransportStopDto } from './dto/transportstop.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
 import { getTranslation } from 'src/helpers/translation.helper';
@@ -21,9 +21,11 @@ export class TransportStopsService {
     return this.model.find().populate(['place_id', 'transport_type', 'lines_available']).exec();
   }
   
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const transportStop = await this.model
-    .findById(id)
+    .findOne(
+      { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',
@@ -40,7 +42,7 @@ export class TransportStopsService {
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!transportStop) {
-      throw new NotFoundException(`TransportStop with ID "${id}" not found`);
+      throw new NotFoundException(`TransportStop with ID "${place_id}" not found`);
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = transportStop.place_id

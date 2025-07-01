@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Commissioner } from './schemas/commissioner.schema';
 import { CreateCommissionerDto } from './dto/commissioner.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -21,9 +21,11 @@ export class CommissionersService {
     return this.model.find().populate(['place_id', 'language_support']).exec();
   }
 
-  async findOne(id: string, lang= 'en'): Promise<any> {
+  async findOne(place_id: string, lang= 'en'): Promise<any> {
     const commissioner = await this.model
-    .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',
@@ -37,7 +39,7 @@ export class CommissionersService {
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!commissioner) {
-      throw new NotFoundException(`Commissioner with ID "${id}" not found`);
+      throw new NotFoundException(`Commissioner with ID "${place_id}" not found`);
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = commissioner.place_id

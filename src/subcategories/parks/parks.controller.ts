@@ -19,9 +19,9 @@ export class ParksController {
     return this.parksService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.parksService.findOne(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.parksService.findOne(place_id, lang);
   }
 
   @Delete(':id')

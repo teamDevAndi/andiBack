@@ -10,9 +10,9 @@ export class TrekkingsController {
     return this.trekkingsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.trekkingsService.findOne(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.trekkingsService.findOne(place_id, lang);
   }
 
   @Delete(':id')

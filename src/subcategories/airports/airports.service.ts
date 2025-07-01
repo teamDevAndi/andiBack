@@ -20,9 +20,9 @@ export class AirportsService {
   async findAll(): Promise<Airport[]> {
     return this.model.find().populate(['place_id', 'transport_options', 'facilities']).exec();
     }
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const airport = await this.model
-      .findById(id)
+      .findById(place_id)
       .populate([
       {
         path: 'place_id',
@@ -41,7 +41,7 @@ export class AirportsService {
       .exec() ;
 
     if (!airport) {
-      throw new NotFoundException(`Airport with ID "${id}" not found`);
+      throw new NotFoundException(`Airport with ID "${place_id}" not found`);
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = airport.place_id

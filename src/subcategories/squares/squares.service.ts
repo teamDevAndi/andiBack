@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Square } from './interfaces/square.interface';
 import { CreateSquareDto } from './dto/square.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -21,9 +21,11 @@ export class SquaresService {
     return this.squareModel.find().populate(['place_id', 'attractions', 'nearby_facilities']).exec();
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const result = await this.squareModel
-    .findById(id)
+    .findOne(
+      { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Mall } from './schemas/mall.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateMallDto } from './dto/mall.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
 import { getTranslation } from 'src/helpers/translation.helper';
@@ -18,9 +18,11 @@ export class MallsService {
     return this.model.find().populate(['place_id', 'store_types', 'entertainment_area']).exec();
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const mall = await this.model
-    .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',
