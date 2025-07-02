@@ -20,7 +20,7 @@ export class PlacesService {
       filter['category'] = { $in: categories };
     }
 
-    const places: Place[] = await this.placeModel.find(filter).lean().exec();
+    const places: Place[] = await this.placeModel.find(filter).populate('place_location').lean().exec();
 
     return places.map((place: Place) => {
       const description_place = place.description_place as Record<string, string> | undefined;
