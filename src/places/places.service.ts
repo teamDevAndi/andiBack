@@ -41,7 +41,6 @@ export class PlacesService {
     if (!place) {
       throw new NotFoundException(`Lugar con ID ${id} no encontrado`);
     }
-
     const description_place = place.description_place as Record<string, string>;
     
     const description = description_place[lang] || description_place['en'] || '';
