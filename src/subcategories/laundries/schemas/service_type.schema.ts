@@ -2,7 +2,7 @@ import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { TranslationBase, TranslationBaseSchema } from 'src/common/schemas/translation.schema';
 
-@Schema()
+@Schema({collection:'servicestypes'})
 export class ServiceType extends Document {
   @Prop({ type: TranslationBaseSchema, required: true })
   name: TranslationBase;

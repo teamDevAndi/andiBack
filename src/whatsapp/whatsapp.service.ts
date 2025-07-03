@@ -84,15 +84,20 @@ export class WhatsappService implements OnModuleInit {
 
       if (!from || !text) return;
 
-      const response = await axios.post(
-        ''+process.env.URL_RAG_SERVER,
-        {
-          "from_": from,
-          "body": text,
-        }
-      )
-
-      await this.sendMessage(from, response.data.reply + 'https://www.google.com');
+      try {
+        const response = await axios.post(
+          '' + process.env.URL_RAG_SERVER,
+          {
+            "from_": from,
+            "body": text,
+          }
+        );
+        await this.sendMessage(from, response.data.reply);
+      } catch (error) {
+        console.error("Error al enviar el mensaje al servidor RAG:", error);
+        const responseMessage = "Lo siento, ha ocurrido un error. Intenta nuevamente más tarde.";
+        await this.sendMessage(from, responseMessage);
+      }
     });
   }
 
