@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Market } from './schemas/market.schema';
 import { CreateMarketDto } from './dto/market.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -18,10 +18,12 @@ export class MarketsService {
     return this.model.find().populate('place_id market_type');
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
 
     const market = await this.model
-    .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',

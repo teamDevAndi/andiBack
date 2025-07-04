@@ -10,9 +10,9 @@ export class InfotoursController {
     return this.infotourService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.infotourService.findById(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.infotourService.findById(place_id, lang);
   }
 
   @Delete(':id')

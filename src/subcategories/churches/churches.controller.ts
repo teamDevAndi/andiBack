@@ -19,9 +19,9 @@ export class ChurchesController {
     return this.churchesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.churchesService.findOne(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.churchesService.findOne(place_id, lang);
   }
 
   @Delete(':id')

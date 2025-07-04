@@ -10,9 +10,9 @@ export class CafesController {
     return this.cafeService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.cafeService.findOne(id, lang);
+  @Get(':placa_id')
+  findOne(@Param('placa_id') placa_id: string, @Query('lang') lang = 'en') {
+    return this.cafeService.findOne(placa_id, lang);
   }
 
 

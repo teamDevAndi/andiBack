@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Restaurant } from './schemas/restaurant.schema';
 import { CreateRestaurantDto } from './dto/restaurant.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -18,9 +18,11 @@ export class RestaurantsService {
     return this.restaurantModel.find().populate(['place_id', 'cuisine_type', 'dietary_options']).exec();
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const restaurant = await this.restaurantModel
-    .findById(id)
+    .findOne(
+      { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',

@@ -10,10 +10,10 @@ export class CommissionersController {
     return this.commissionerService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
 
-    return this.commissionerService.findOne(id, lang);
+    return this.commissionerService.findOne(place_id, lang);
   }
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

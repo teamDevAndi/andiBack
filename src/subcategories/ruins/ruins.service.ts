@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Ruin } from './schemas/ruin.schema';
 import { CreateRuinDto } from './dto/ruin.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -18,10 +18,12 @@ export class RuinsService {
     return this.ruinModel.find().populate('place_id historical_period');
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
 
     const ruin = await this.ruinModel
-    .findById(id)
+    .findOne(
+      { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',

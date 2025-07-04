@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Monument } from './schemas/monument.schema';
 import { CreateMonumentDto } from './dto/monument.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -18,9 +18,11 @@ export class MonumentsService {
     return this.model.find().populate(['place_id', 'material_used', 'nearby_facilities']).exec();
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const monument = await this.model
-    .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',

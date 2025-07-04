@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Hotel } from './schemas/hotel.schema';
 import { CreateHotelDto } from './dto/hotel.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -18,9 +18,11 @@ export class HotelsService {
     return this.model.find().populate(['place_id', 'room_types', 'amenities', 'language_support']).exec();
   }
 
-  async findOne(id: string, lang= 'en'): Promise<any> {
+  async findOne(place_id: string, lang= 'en'): Promise<any> {
     const hotel = await this.model
-    .findById(id)
+    .findOne(
+        { place_id: new Types.ObjectId(place_id) }
+    )
     .populate([
       {
         path: 'place_id',
@@ -40,7 +42,7 @@ export class HotelsService {
     .lean<PopulatedPlaceBase>()
     .exec();
     if (!hotel) {
-      throw new NotFoundException(`Hotel with ID "${id}" not found`);
+      throw new NotFoundException(`Hotel with ID "${place_id}" not found`);
     }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { description_place, costs, ...restPlace } = hotel.place_id

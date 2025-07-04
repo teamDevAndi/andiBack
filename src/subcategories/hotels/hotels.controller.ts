@@ -10,9 +10,9 @@ export class HotelsController {
     return this.hotelService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string, @Query('lang') lang = 'en') {
-    return this.hotelService.findOne(id, lang);
+  @Get(':place_id')
+  findOne(@Param('place_id') place_id: string, @Query('lang') lang = 'en') {
+    return this.hotelService.findOne(place_id, lang);
   }
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)

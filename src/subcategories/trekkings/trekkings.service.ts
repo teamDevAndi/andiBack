@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Trekking } from './interfaces/trekking.interface';
 import { CreateTrekkingDto } from './dto/trekking.dto';
 import { PopulatedPlaceBase } from 'src/common/interfaces/base.interface';
@@ -24,9 +24,11 @@ export class TrekkingsService {
       .exec();
   }
 
-  async findOne(id: string, lang = 'en'): Promise<any> {
+  async findOne(place_id: string, lang = 'en'): Promise<any> {
     const trekking = await this.trekkingModel
-      .findById(id)
+    .findOne(
+      { place_id: new Types.ObjectId(place_id) }
+    )
       .populate([
         {
           path: 'place_id',
@@ -41,7 +43,7 @@ export class TrekkingsService {
       .exec();
 
     if (!trekking) {
-      throw new NotFoundException(`Trekking with ID "${id}" not found`);
+      throw new NotFoundException(`Trekking with ID "${place_id}" not found`);
     }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
